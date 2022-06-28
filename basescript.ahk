@@ -1,58 +1,3 @@
-numlock::
- WinGet re4_pid, Pid, A
- process close, %re4_pid%
-return
-previousTab = ""
-:*:pdfcolab::
-keywait, CTRL, D
-keywait, CTRL, U
-sendInput, !sudo apt-get install texlive-xetex texlive-fonts-recommended texlive-plain-generic
-sendInput,  {ctrl down}{enter}{ctrl up}
-keywait, CTRL, D
-keywait, CTRL, U
-sendInput, !jupyter nbconvert --to pdf ruta.ipynb
-sendInput,  {ctrl down}{enter}{ctrl up}
-return
-:*:rimraf::
-sendInput, {home}
-sleep, 200 
-sendinput, rimraf .\**\
-return
-:*:guudmail::
-run, "https://guud.com.mx:2096/cpsess9695194462/3rdparty/roundcube/?_task=mail&_mbox=INBOX"
-return
-:*:guudclickup::
-run, "https://app.clickup.com/6966894/v/l/6-163193463-1"
-return
-:*:npm  ::
-sendInput, ^{c}
-sleep, 100
-sendInput, ^{c}
-sleep, 100
-sendInput, ^{c}
-sleep, 20
-sendInput, cls & npm start {enter}
-return
-::comit:: 
-sendInput, git commit -a -m "
-keywait, CTRL, D
-keywait, CTRL, U
-sendInput, " {enter}
-return
-::push::
-sendInput, git push {enter}
-
-return
-
-:*:npmd::
-sendInput, ^{c}
-sleep, 100
-sendInput, ^{c}
-sleep, 100
-sendInput, ^{c}
-sendInput, npm run dev
-sendInput, {enter}
-return
 
 ; f11::
 
@@ -505,145 +450,64 @@ return
 ; mousemove, X, Y, 0
 ; return
 
-^+!Lbutton::
-    sendInput, ^e
-    sendInput, {delete}
-    MouseGetPos, X, Y
-    MouseMove, 326, 83, 0
-    Click
-    MouseMove, X, Y, 0
+; ^+!Lbutton::
+;     sendInput, ^e
+;     sendInput, {delete}
+;     MouseGetPos, X, Y
+;     MouseMove, 326, 83, 0
+;     Click
+;     MouseMove, X, Y, 0
     
-    ; Input my radius
-    InputBox, Radius, Radius, Input Radius
-    ; Draw my circle
-    sleep, 100
-    BlockInput, ON
-    Radius= 50
-    MouseGetPos, StartX, StartY
-    MouseMove, 0, %Radius%, 0, R
-    MouseClick, Left, , , , 0, D
-    Loop 64
-    {
-        xVar := Radius*Sin(A_Index/10)
-        yVar := Radius*Cos(A_Index/10)
-        DrawX := StartX+xVar
-        DrawY := StartY+yVar
-        MouseMove, %DrawX%, %DrawY%, 0
-        MouseMove, %DrawX%, %DrawY%, 0
-    }
-    MouseClick, Left, , , , 0, U
-    ; r is radius of circle, nLaps is number of laps to turn, can be -1 for keep on going until lbutton is released.
-    ; Set direction via, dir. dir:=1 is clockwise, dir:=-1 is counter-clockwise
-    sleep, 100
-    BlockInput, ON
-    r:=100, speed:=0, nLaps:=1, dir:=-1
-    cont:= 0
-    pi:=3.1416, n:=2*r*pi
-    points := []
-    t:=0
-    SetMouseDelay, -1
-    CoordMode, Mouse, Screen
-    MouseGetPos, OX, OY
-    MouseMove, OX+r*cos(t:=((A_Index)/n)), OY+dir*r*sin(t), speed
-    MouseClick, Left, , , , 0, D
-    while ((t<=2*pi*nLaps)) {
-        cont++
-        MouseMove, OX+r*cos(t:=((A_Index-1)/n)), OY+dir*r*sin(t), speed
-    }
-    MouseClick, Left, , , , 0, U
-    sendInput, {Control Up}
-    BlockInput, OFF
-    MsgBox, %cont%
-Return
+;     ; Input my radius
+;     InputBox, Radius, Radius, Input Radius
+;     ; Draw my circle
+;     sleep, 100
+;     BlockInput, ON
+;     Radius= 50
+;     MouseGetPos, StartX, StartY
+;     MouseMove, 0, %Radius%, 0, R
+;     MouseClick, Left, , , , 0, D
+;     Loop 64
+;     {
+;         xVar := Radius*Sin(A_Index/10)
+;         yVar := Radius*Cos(A_Index/10)
+;         DrawX := StartX+xVar
+;         DrawY := StartY+yVar
+;         MouseMove, %DrawX%, %DrawY%, 0
+;         MouseMove, %DrawX%, %DrawY%, 0
+;     }
+;     MouseClick, Left, , , , 0, U
+;     ; r is radius of circle, nLaps is number of laps to turn, can be -1 for keep on going until lbutton is released.
+;     ; Set direction via, dir. dir:=1 is clockwise, dir:=-1 is counter-clockwise
+;     sleep, 100
+;     BlockInput, ON
+;     r:=100, speed:=0, nLaps:=1, dir:=-1
+;     cont:= 0
+;     pi:=3.1416, n:=2*r*pi
+;     points := []
+;     t:=0
+;     SetMouseDelay, -1
+;     CoordMode, Mouse, Screen
+;     MouseGetPos, OX, OY
+;     MouseMove, OX+r*cos(t:=((A_Index)/n)), OY+dir*r*sin(t), speed
+;     MouseClick, Left, , , , 0, D
+;     while ((t<=2*pi*nLaps)) {
+;         cont++
+;         MouseMove, OX+r*cos(t:=((A_Index-1)/n)), OY+dir*r*sin(t), speed
+;     }
+;     MouseClick, Left, , , , 0, U
+;     sendInput, {Control Up}
+;     BlockInput, OFF
+;     MsgBox, %cont%
+; Return
 
-rcontrol::
-    brave:="ahk_exe brave.exe"
-    brave_path:="C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
-    if WinExist(brave) {
-        if(!WinActive(brave)) {
-            WinGet, class1, PID , A
-            previousTab := "ahk_pid " class1
-            WinActivate
-        }else{
-            if WinExist(previousTab){
-                WinActivate
-            }else{
-                previousTab = ""
-            }
-        }
-    }
-    
-    else{
-        run %brave_path%
-    }
-return
-
-Rwin::
-    whatsapp:="ahk_exe WhatsApp.exe"
-    whatsapp_path:="C:\Users\facel\AppData\Local\WhatsApp\WhatsApp.exe"
-    if WinExist(whatsapp) {
-        if(!WinActive(whatsapp)) {
-            WinGet, class1, ProcessName, A
-            class1 := "ahk_exe " class1
-            previousTab = class1
-            WinActivate
-        }else{
-            if WinExist(previousTab){
-                if(WinActive(!previousTab)){
-                    WinActivate
-                }
-            }
-        }
-    } else {
-        run %whatsapp_path%
-    }
-return
-:*:111mtc::
-    sendInput, 1118150082
-return
-^numpad6::
-    while (true) {
-        send, {Wheeldown}
-        send, {Wheeldown}
-        
-        sleep, 900
-    }
-return
-; msgbox, %A_FileEncoding%
-
-:*:rh@::raul.herrera4@hotmail.com
-:*:rh111::
-    sendInput, RH111815008206{#}
-return
-:*:rhm::
-    SendInput, Ra{alt down}{Numpad1}{Numpad6}{Numpad3}{alt up}l Herrera Mac{alt down}{Numpad1}{Numpad6}{Numpad1}{alt up}as
-return
-:*:rhg@::rherrera@guud.com.mx
-::sshbp::
-    sendInput, ssh ubuntu@3.17.13.180 -i "C:\Users\facel\Desktop\guudbpkey.pem"
-    sleep, 50
-    sendInput, {enter}
-return
-::sshgcc::
-    sendInput, ssh ubuntu@18.232.139.2 -i "C:\Users\facel\Desktop\GUUD GCC Key.pem"
-    sleep, 50
-    sendInput, {enter}
-return
-:*:rhgp::Raul2024**
-:*:bpw::@A..e..3
-:*:fd@::facelessdivine@gmail.com
-:*:111@::1118150082@utch.edu.mx
-:*:hemr::HEMR000915HCHRCLA7
-::numss::63160076053
 ; :*:111equipo::
 ;     sendInput, Rosa Alejandra Legarda Bencomo, Efra{alt down}{Numpad1}{Numpad6}{Numpad1}{alt up}n Fernando Bejarano Puentes, Ra{alt down}{Numpad1}{Numpad6}{Numpad3}{alt up}l Herrera Mac{alt down}{Numpad1}{Numpad6}{Numpad1}{alt up}as
 ; return
 ; :*:111team::
 ;     sendInput, 1119150016, 1118150082, 1118150112
 ; return
-:*:111u::
-    sendinput, 1118150082
-Return
+
 ;     if winexist("ahk_exe brave.exe"){
 ;         winactivate
 ;     }
@@ -657,93 +521,7 @@ Return
 ;         ; CheckConnection()
 ;     }
 ; Return
-Mbutton::
-    if winactive("ahk_exe brave.exe") or winactive("ahk_exe opera.exe") or winactive("ahk_exe Code.exe")or winactive("ahk_exe chrome.exe"){
-        send, ^{w}
-    }else if winactive("ahk_exe javaw.exe") {
-        send, {z}
-    }
-    else if winactive("ahk_exe WindowsTerminal.exe") {
-        send, ^+{w}
-    }
-    else if winactive("ahk_class Progman") or winactive("ahk_class WorkerW") {
-        send, #{e}
-    } else {
-        send, !{f4}
-    }
-return
-imssencuesta()
-{
-    mousemove, 81, 276, 0
-    send, {tab 5}
-    sendInput, HEMR000915HCHRCLA7
-    send, {Tab}
-    SendInput, 31135
-    sleep, 400
-    ; send, ^+{i}
-    ; sleep, 3000
-    ; send, {WheelDown 4}
-    ; sleep, 500
-    ; sleep, 1000
-    ; mousemove, 798, 92, 0
-    ; click
-    ; sleep, 100
-    f:=False
-    while (!f) {
-        ImageSearch, x, y, 0, 0, 1366, 768, C:\Users\raulh\Pictures\imgcaptchafondoimss.png
-        if(x > 0) {
-            f:=True
-            x-=40
-            y-=25
-            mousemove, x, y, 0
-            
-            ; click
-        }
-        sleep, 10
-    }
-    ; sleep, 100
-    send, {Lbutton Down}
-    mousemove, 865, 555, 0
-    send, {Lbutton up}
-    sleep, 300
-    send, ^{c}
-    send, {tab 3}
-    send, ^{v}
-    send, {Tab}
-    send, {Enter}
-    sleep, 1500
-    mousemove, 105, 528, 0
-    click
-    mousemove, 105, 505, 0
-    click
-    mousemove, 105, 448, 0
-    click
-    mousemove, 105, 348, 0
-    click
-    mousemove, 105, 326, 0
-    click
-    mousemove, 1036, 646, 0
-    click
-    sleep, 1500
-    mousemove, 693, 474, 0
-    Click
-    mousemove, 1059, 519, 0
-    Click
-    sleep, 1500
-    mousemove, 126, 540, 0
-    Click
-    mousemove, 1046, 579, 0
-    Click
-    sleep, 1800
-    send, {tab 8}
-    sendInput, 6142553874
-    send, {Tab}
-    send, {Right}{left}
-    Send, {tab}
-    sendInput, 63160076053
-    send, {Tab} {Enter}
-    Return
-}
+
 ; f7::
     
 ;     send, {f5}
@@ -864,100 +642,7 @@ imssencuesta()
 ;     }
 ;     MsgBox, 0, END, Fin del script, 3
 ; Return
-:*:datetime...::
-    FormatTime, TimeString, T12, Time
-    FormatTime, mesCompleto, , MMMM
-    FormatTime, dia2, , dd
-    FormatTime, ano, , yyyy
-    sendInput %mesCompleto%-%dia2%-%ano% %TimeString%
-    
-return
-:*:time...::
-    FormatTime, TimeString, T12, Time
-    sendInput, %TimeString%
-return
-:*:date...::
-    FormatTime, mesCompleto, , MMMM
-    FormatTime, dia2, , dd
-    FormatTime, ano, , yyyy
-    sendInput %mesCompleto%-%dia2%-%ano%
-return
 
-:*:10010::100101011010110password10010
-:*:1001p::100101011010110Password10010
-:*:1001m::100101011010110Password100101011010110
-^+!1::
-    sleep, 1000
-    KeyWait, Control, D
-    KeyWait, Control, U
-    WinGet, class1, ProcessName, A
-    
-    class1 := "ahk_exe " class1
-    MsgBox, 0, Data, Clase 1 guardada, 1
-    
-    KeyWait, Control, D
-    KeyWait, Control, U
-    WinGet, class2, ProcessName, A
-    class2 := "ahk_exe " class2
-    MsgBox, 0, Data, Clase 2 guardada, 1
-    while (True) {
-        KeyWait, Alt, D
-        KeyWait, Alt, U
-        if winactive(class1) {
-            if WinExist(class2) {
-                WinActivate
-            }
-        } else {
-            if WinExist(class1) {
-                WinActivate
-            }
-        }
-    }
-    
-Return
-^+!s::
-    if WinExist("ahk_exe Teams.exe") {
-        if(WinActive()) {
-            process, close, Teams.exe
-        }
-        WinActivate
-    } else {
-        run, C:\Users\raulh\AppData\Local\Microsoft\Teams\Update.exe --processStart "Teams.exe"
-    }
-return
-^+!d::
-    if WinExist("ahk_exe Discord.exe") {
-        if(WinActive()) {
-            process, close, Discord.exe
-        }
-        WinActivate
-    } else {
-        run, C:\Users\raulh\AppData\Local\Discord\Update.exe --processStart Discord.exe
-    }
-return
-^+!o::
-    if WinExist("ahk_exe brave.exe") {
-        if(!WinActive()) {
-            WinActivate
-        }
-        
-    } else {
-        run, brave.exe
-    }
-return
-; ^+!v::
-;     if WinExist("ahk_exe WhatsApp.exe")
-;     {
-;         if(WinActive()){
-;             process, close, WhatsApp.exe
-;         }
-;         WinActivate
-;     }
-;     else
-;     {
-;         run, "C:\Users\raulh\AppData\Local\WhatsApp\WhatsApp.exe"
-;     }
-; return
 ^r::reload
 ; ^+!a::
 ;     MsgBox, 0, Script Teams, Se ha iniciado servicio de búsqueda de reunión en Microsoft Teams, 3
